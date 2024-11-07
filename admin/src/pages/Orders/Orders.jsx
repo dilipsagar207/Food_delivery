@@ -9,14 +9,33 @@ const Orders = ({url}) => {
 
   const [orders,setOrders] = useState([]);
 
-  const fetchAllOrders =async()=>{
-    const response = await axios.get(url+"/api/order/list");
-    if(response.data.success){
-      setOrders(response.data.data);
-      console.log(response.data.data);
-    }
-    else{
-      toast.error("Error")
+  // const fetchAllOrders =async()=>{
+  //   const response = await axios.get(url+"/api/order/list");
+  //   if(response.data.success){
+  //     setOrders(response.data.data);
+  //     console.log(response.data.data);
+  //   }
+  //   else{
+  //     toast.error("Error")
+  //   }
+  // }
+
+  const fetchAllOrders = async () => {
+    try {
+      const response = await axios.get(url + "/api/order/list");
+      if (response.data.success) {
+        setOrders(response.data.data);
+        console.log(response.data.data);
+      } else {
+        toast.error("Error fetching orders");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      if (error.response) {
+        toast.error(`Error: ${error.response.data.message}`);
+      } else {
+        toast.error("Network Error");
+      }
     }
   }
 
